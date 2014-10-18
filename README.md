@@ -11,3 +11,4 @@ Build with CMake:
     cd ..
     make
 
+Note : this was created by crudely extracting the relevant portions of our bot. Pull requests for cleaning it are more than welcome!
