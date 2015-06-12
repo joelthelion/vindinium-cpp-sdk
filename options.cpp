@@ -45,7 +45,7 @@ Options parse_options(int argc, char* argv[])
     }
     catch (std::exception& ex)
     {
-        std::cerr << ex.what() << std::endl;
+        std::cerr << "Error occurred when parsing options: " << ex.what() << std::endl;
         std::cerr << po_options;
         std::exit(1);
     }

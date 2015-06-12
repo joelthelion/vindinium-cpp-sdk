@@ -151,14 +151,14 @@ int main(int argc, char* argv[])
 {
     signal(SIGINT, sigint_handler);
 #if !defined(NDEBUG)
-    std::cout << "!!!!!! DEBUG ENABLED !!!!!!" << std::endl;
+    std::cout << "\t> Running in DEBUG mode" << std::endl;
 #endif
 
 #if defined(OPENMP_FOUND)
     omp_set_nested(true);
-    std::cout << "!!!!!! OPENMP FTW !!!!!!" << std::endl;
-    std::cout << omp_get_max_threads() << " threads max" << std::endl;
-    std::cout << omp_get_wtick()*1e9 << "ns tick" << std::endl;
+    std::cout << "\t> Running using OPENMP " << std::endl;
+    std::cout << "\t\t> " << omp_get_max_threads() << " threads max" << std::endl;
+    std::cout << "\t\t> " << omp_get_wtick()*1e9 << "ns tick" << std::endl;
     assert( omp_get_nested() );
 #endif
 
