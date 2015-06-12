@@ -42,8 +42,6 @@ Options parse_options(int argc, char* argv[])
         if (options.secret_key.size() != 8) throw po::invalid_option_value("secret_key.size != 8");
         if (options.number_of_turns < 0) throw po::invalid_option_value("number_of_turns < 0");
         if (options.number_of_games < 0) throw po::invalid_option_value("number_of_games < 0");
-        if (options.uct_constant < 0) throw po::invalid_option_value("uct_constant < 0");
-        if (options.max_mc_depth < 20) throw po::invalid_option_value("max_mc_depth < 20");
     }
     catch (std::exception& ex)
     {

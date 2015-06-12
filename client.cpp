@@ -175,9 +175,6 @@ int main(int argc, char* argv[])
 
     Options options = parse_options(argc, argv);
 
-    std::cout << "uct constant " << options.uct_constant << std::endl;
-    std::cout << "max mc depth " << options.max_mc_depth << std::endl;
-
     typedef std::map<std::string, int> Wins;
     Wins wins;
 

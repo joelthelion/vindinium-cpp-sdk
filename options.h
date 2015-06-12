@@ -11,8 +11,6 @@ struct Options
     std::string server_name;
     std::string map_name;
     std::string proxy;
-    double uct_constant;
-    int max_mc_depth;
     bool collect_map;
 };
 
