@@ -5,11 +5,6 @@ Bot::Bot(const Game& game, Rng& rng) :
 {
 }
 
-void
-Bot::crunch_it_baby(const Game& game, const OmpFlag& continue_flag, const double& start_time, const double& duration_max)
-{
-}
-
 Direction
 Bot::get_move(const Game& game) const
 {

@@ -51,10 +51,6 @@ play_game(const Options& options, Rng& rng)
     Game game(initial_json);
     Bot bot(game, rng);
 
-#if defined(REPORTING)
-    Reports reports;
-#endif
-
     while (!game.is_finished())
     {
         OmpFlag continue_flag(true);
@@ -65,19 +61,11 @@ play_game(const Options& options, Rng& rng)
         game.status(std::cout);
 
         std::cout << "++++++++++++++++++++++++++++++++++++++++ " << clock_it(get_double_time() - start_time) << std::endl;
-#if defined(REPORTING)
-        Report report_aa = bot.crunch_it_baby(game, continue_flag, start_time, TURN_DURATION);
-        report_aa.type = 1;
-        reports.push_back(report_aa);
-#else
-        bot.crunch_it_baby(game, continue_flag, start_time, TURN_DURATION);
-#endif
 
         const Direction direction = bot.get_move(game);
         std::cout << "bot direction " << direction << std::endl;
 
         bot.advance_game(game, direction);
-        //game.status(std::cout);
 
         std::cout << "---------------------------------------- " << clock_it(get_double_time() - start_time) << std::endl;
 
@@ -99,37 +87,17 @@ play_game(const Options& options, Rng& rng)
 
                 continue_flag.reset();
             }
-
-#if defined(OPENMP_FOUND)
-            #pragma omp section
-            {
-#if defined(REPORTING)
-                Report report_bb = bot.crunch_it_baby(game, continue_flag, start_time, 4);
-                report_bb.type = 2;
-                reports.push_back(report_bb);
-#else
-                bot.crunch_it_baby(game, continue_flag, start_time, 4);
-#endif
-            }
         }
-#endif
-
         game.state.update(new_json);
         game.update(new_json);
 
         std::cout << "request took " << clock_it(request_end_time-request_start_time) << std::endl;
-
-        //game.status(std::cout);
 
         std::cout << "======================================== " << clock_it(get_double_time() - start_time) << std::endl;
         start_time = get_double_time();
     }
 
     assert( game.is_finished() );
-
-#if defined(REPORTING)
-    save_report_file(reports, "report.txt");
-#endif
 
     return game;
 }
