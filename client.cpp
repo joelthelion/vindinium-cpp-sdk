@@ -162,7 +162,7 @@ int main(int argc, char* argv[])
     assert( omp_get_nested() );
 #endif
 
-    test_random();
+//     test_random();
     Rng rng;
     rng.seed(rand());
 
