@@ -1,6 +1,6 @@
 #include "random_bot.h"
 
-Bot::Bot(const Game& game, Rng& rng) :
+Bot::Bot(const Options& opt, const Game& game, Rng& rng) :
     rng(rng)
 {
 }

@@ -4,7 +4,7 @@
 
 struct Bot
 {
-    Bot(const Game& game, Rng& rng);
+    Bot(const Options& opt, const Game& game, Rng& rng);
 
     Direction
     get_move(const Game& game) const;

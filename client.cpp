@@ -49,7 +49,7 @@ play_game(const Options& options, Rng& rng)
     }
 
     Game game(initial_json);
-    Bot bot(game, rng);
+    Bot bot(options, game, rng);
 
     while (!game.is_finished())
     {
