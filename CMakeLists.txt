@@ -7,6 +7,8 @@ set(USE_OPENMP true CACHE BOOL "Use OpenMP")
 
 set(ADDITIONAL_LIBS "curl")
 
+find_package(CURL REQUIRED)
+
 find_package(OpenMP)
 if(USE_OPENMP)
 	if(OPENMP_FOUND)

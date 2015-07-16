@@ -1,12 +1,7 @@
 #include "random_bot.h"
 
-Bot::Bot(const Game& game, Rng& rng) :
+Bot::Bot(const Options& opt, const Game& game, Rng& rng) :
     rng(rng)
-{
-}
-
-void
-Bot::crunch_it_baby(const Game& game, const OmpFlag& continue_flag, const double& start_time, const double& duration_max)
 {
 }
 

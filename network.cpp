@@ -131,6 +131,7 @@ HTTPConnection::get_initial_state_json(const Options& options)
     }
 
     std::cout << "getting initial game state at " << options.server_name << end_point << std::endl;
+    std::cout << "using the following parameters: " << std::endl;
     for (Params::const_iterator pi=params.begin(), pie=params.end(); pi!=pie; pi++)
         std::cout << "  " << pi->first << " " << pi->second << std::endl;
 

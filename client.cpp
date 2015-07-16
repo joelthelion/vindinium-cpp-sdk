@@ -49,18 +49,7 @@ play_game(const Options& options, Rng& rng)
     }
 
     Game game(initial_json);
-
-#if defined(BOTUCT) || defined(BOTMULTI)
-    Bot bot(game, options.uct_constant, options.max_mc_depth, rng);
-#elif defined(BOTRANDOM)
-    Bot bot(game, rng);
-#else
-    Bot bot(game);
-#endif
-
-#if defined(REPORTING)
-    Reports reports;
-#endif
+    Bot bot(options, game, rng);
 
     while (!game.is_finished())
     {
@@ -72,19 +61,11 @@ play_game(const Options& options, Rng& rng)
         game.status(std::cout);
 
         std::cout << "++++++++++++++++++++++++++++++++++++++++ " << clock_it(get_double_time() - start_time) << std::endl;
-#if defined(REPORTING)
-        Report report_aa = bot.crunch_it_baby(game, continue_flag, start_time, TURN_DURATION);
-        report_aa.type = 1;
-        reports.push_back(report_aa);
-#else
-        bot.crunch_it_baby(game, continue_flag, start_time, TURN_DURATION);
-#endif
 
         const Direction direction = bot.get_move(game);
         std::cout << "bot direction " << direction << std::endl;
 
         bot.advance_game(game, direction);
-        //game.status(std::cout);
 
         std::cout << "---------------------------------------- " << clock_it(get_double_time() - start_time) << std::endl;
 
@@ -106,37 +87,17 @@ play_game(const Options& options, Rng& rng)
 
                 continue_flag.reset();
             }
-
-#if defined(OPENMP_FOUND)
-            #pragma omp section
-            {
-#if defined(REPORTING)
-                Report report_bb = bot.crunch_it_baby(game, continue_flag, start_time, 4);
-                report_bb.type = 2;
-                reports.push_back(report_bb);
-#else
-                bot.crunch_it_baby(game, continue_flag, start_time, 4);
-#endif
-            }
         }
-#endif
-
         game.state.update(new_json);
         game.update(new_json);
 
         std::cout << "request took " << clock_it(request_end_time-request_start_time) << std::endl;
-
-        //game.status(std::cout);
 
         std::cout << "======================================== " << clock_it(get_double_time() - start_time) << std::endl;
         start_time = get_double_time();
     }
 
     assert( game.is_finished() );
-
-#if defined(REPORTING)
-    save_report_file(reports, "report.txt");
-#endif
 
     return game;
 }
@@ -158,25 +119,22 @@ int main(int argc, char* argv[])
 {
     signal(SIGINT, sigint_handler);
 #if !defined(NDEBUG)
-    std::cout << "!!!!!! DEBUG ENABLED !!!!!!" << std::endl;
+    std::cout << "\t> Running in DEBUG mode" << std::endl;
 #endif
 
 #if defined(OPENMP_FOUND)
     omp_set_nested(true);
-    std::cout << "!!!!!! OPENMP FTW !!!!!!" << std::endl;
-    std::cout << omp_get_max_threads() << " threads max" << std::endl;
-    std::cout << omp_get_wtick()*1e9 << "ns tick" << std::endl;
+    std::cout << "\t> Running using OPENMP " << std::endl;
+    std::cout << "\t\t> " << omp_get_max_threads() << " threads max" << std::endl;
+    std::cout << "\t\t> " << omp_get_wtick()*1e9 << "ns tick" << std::endl;
     assert( omp_get_nested() );
 #endif
 
-    test_random();
+//     test_random();
     Rng rng;
     rng.seed(rand());
 
     Options options = parse_options(argc, argv);
-
-    std::cout << "uct constant " << options.uct_constant << std::endl;
-    std::cout << "max mc depth " << options.max_mc_depth << std::endl;
 
     typedef std::map<std::string, int> Wins;
     Wins wins;

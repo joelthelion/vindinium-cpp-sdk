@@ -219,6 +219,7 @@ test_random_throughtput()
 void
 test_random()
 {   // random test
+    std::cout << "Doing random test...\n";
     const int rand_aa = test_random_generator();
     srand(1);
     const int rand_bb = test_random_generator();
@@ -229,4 +230,5 @@ test_random()
     std::cout << std::dec;
     assert( rand_aa == rand_bb );
     test_random_throughtput();
+    std::cout << "...done!\n";
 }
